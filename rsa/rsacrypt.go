@@ -13,14 +13,14 @@ import (
 )
 
 /*
-	Operation with rsa encryption
+Operation with rsa encryption
 */
 func init() {
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetReportCaller(true)
 }
 
-func rsaEncrypt(plainText, publicKey []byte) (cipherText []byte, err error) {
+func RsaEncrypt(plainText, publicKey []byte) (cipherText []byte, err error) {
 	defer func() {
 		if err := recover(); err != nil {
 			switch err.(type) {
@@ -64,7 +64,7 @@ func rsaEncrypt(plainText, publicKey []byte) (cipherText []byte, err error) {
 	return cipherText, nil
 }
 
-func rsaDecrypt(cipherText, privateKey []byte) (plainText []byte, err error) {
+func RsaDecrypt(cipherText, privateKey []byte) (plainText []byte, err error) {
 	defer func() {
 		if err := recover(); err != nil {
 			switch err.(type) {
@@ -103,14 +103,13 @@ func RsaEncryptToBase64(plainText []byte, base64PubKey string) (base64CipherText
 	if err != nil {
 		return "", err
 	}
-	cipherBytes, err := rsaEncrypt(plainText, pub)
+	cipherBytes, err := RsaEncrypt(plainText, pub)
 	if err != nil {
 		return "", err
 	}
 	return base64.StdEncoding.EncodeToString(cipherBytes), nil
 }
 
-//
 func RsaDecryptByBase64(base64CipherText, base64PriKey string) (plainText []byte, err error) {
 	privateBytes, err := base64.StdEncoding.DecodeString(base64PriKey)
 	if err != nil {
@@ -120,7 +119,7 @@ func RsaDecryptByBase64(base64CipherText, base64PriKey string) (plainText []byte
 	if err != nil {
 		return nil, err
 	}
-	return rsaDecrypt(cipherTextBytes, privateBytes)
+	return RsaDecrypt(cipherTextBytes, privateBytes)
 }
 
 func RsaEncryptToHex(plainText []byte, hexPubKey string) (hexCipherText string, err error) {
@@ -128,7 +127,7 @@ func RsaEncryptToHex(plainText []byte, hexPubKey string) (hexCipherText string, 
 	if err != nil {
 		return "", err
 	}
-	cipherBytes, err := rsaEncrypt(plainText, pub)
+	cipherBytes, err := RsaEncrypt(plainText, pub)
 	if err != nil {
 		return "", err
 	}
@@ -144,5 +143,5 @@ func RsaDecryptByHex(hexCipherText, hexPriKey string) (plainText []byte, err err
 	if err != nil {
 		return nil, err
 	}
-	return rsaDecrypt(cipherTextBytes, privateBytes)
+	return RsaDecrypt(cipherTextBytes, privateBytes)
 }
